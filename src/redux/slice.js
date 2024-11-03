@@ -38,8 +38,9 @@ export const AddToCartSlice = createSlice({
       existingCart.quan > 1 ? existingCart.quan -= 1 : existingCart.quan  ;
     },
     deletItem: (state , action)=> {
-      const existingCart = state.cart.find((item) => item.data.id == action.payload);
-      state.cart.pop(existingCart)
+      // const existingCart = state.cart.find((item) => item.data.id == action.payload);
+      // state.cart.pop(existingCart)
+      state.cart = state.cart.filter((item) => item.data.id !== action.payload);
 
     }
   },

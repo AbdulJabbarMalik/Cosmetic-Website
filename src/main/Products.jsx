@@ -32,12 +32,12 @@ const Products = () => {
   return (
 
     <>
-  <div className="productCards flex flex-row flex-wrap gap-4 justify-around">
+  <div className="productCards flex flex-row flex-wrap gap-4  justify-around md:p-6 md:gap-40">
     {data && data.length > 0 ? (
       data.map((items, index) => {
         return (
           <Link key={index} to={`/Productsdetails/${items.id}`}>
-            <div className="card flex flex-col items-center w-[300px] h-[506px]">
+            <div className="card flex flex-col items-center sm:w-[300px] sm:h-[506px]  w-[250px] h-[406px]">
               <div
                 className=" flex justify-center w-full h-[412px] bg-[#FFFFFF] overflow-hidden"
                 style={{
