@@ -4,16 +4,22 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth , createUserWithEmailAndPassword , signInWithEmailAndPassword  } from "firebase/auth";
-import Swal from 'sweetalert2'
+import { Eye, EyeOff } from "lucide-react";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import Swal from "sweetalert2";
+
 export function Login() {
-
-  const [issignup , setIssignup] = useState(false)
-  const [email , setEmail] = useState(null)
-  const [pass , setPass] =useState(null)
-  const navigate = useNavigate()
-
-
+  const [issignup, setIssignup] = useState(false);
+  const [email, setEmail] = useState(null);
+  const [pass, setPass] = useState(null);
+  const [ eyetoggle, setEyetoggle]  = useState(false);
+  const navigate = useNavigate();
+ 
 
   const {
     register,
@@ -32,99 +38,86 @@ export function Login() {
     measurementId: "G-C01BC7Z74D",
   };
   const onSubmit = (data) => {
-
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-    const auth = getAuth(app)
+    const auth = getAuth(app);
 
-    if(issignup == true){
-
+    if (issignup == true) {
       signInWithEmailAndPassword(auth, email, pass)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-
-        Swal.fire({
-          title: 'Login',
-          text: 'Successfully',
-          icon: 'success',
-          confirmButtonText: 'Okay',
-          confirmButtonColor:'green'
-        }).then(()=> navigate('/home') )
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        Swal.fire({
-          title: 'Error',
-          text: errorMessage,
-          icon: 'error',
-          confirmButtonText: 'Okay',
-           confirmButtonColor:'red'
-        })
-      });
-      
-      }
-      else {
-        createUserWithEmailAndPassword(auth, email, pass)
         .then((userCredential) => {
-          // Signed up 
+          // Signed in
           const user = userCredential.user;
+
           Swal.fire({
-            title: 'Sign Up',
-            text: 'Successfully',
-            icon: 'success',
-            confirmButtonText: 'Okay',
-            confirmButtonColor:'green'
-          }).then(()=> setIssignup(true) )
+            title: "Login",
+            text: "Successfully",
+            icon: "success",
+            confirmButtonText: "Okay",
+            confirmButtonColor: "green",
+          }).then(() => navigate("/home"));
           // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           Swal.fire({
-            title: 'Error',
+            title: "Error",
             text: errorMessage,
-            icon: 'error',
-            confirmButtonText: 'Okay',
-            confirmButtonColor:'red',
-           
-          })
+            icon: "error",
+            confirmButtonText: "Okay",
+            confirmButtonColor: "red",
+          });
+        });
+    } else {
+      createUserWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          Swal.fire({
+            title: "Sign Up",
+            text: "Successfully",
+            icon: "success",
+            confirmButtonText: "Okay",
+            confirmButtonColor: "green",
+          }).then(() => setIssignup(true));
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          Swal.fire({
+            title: "Error",
+            text: errorMessage,
+            icon: "error",
+            confirmButtonText: "Okay",
+            confirmButtonColor: "red",
+          });
           // ..
         });
-      }
-
     }
-    
+  };
 
-    
-
-  
-
-  console.log(watch("example")); // watch input value by passing the name of i
+  // console.log(watch("example")); // watch input value by passing the name of i
 
   return (
     <>
-      <div className="flex flex-col items-start text-start gap-4 w-[340px] ">
-        <h2 className="text-start font-normal w-max h-[56px] text-[34px] p-1">
-
-          {issignup == true ? 'Login' : 'Sign Up' }
-         
+      <div className="flex flex-col items-start text-start gap-4 sm:w-[440px] w-[100%] ">
+        <h2 className="text-start font-normal w-max  text-[34px] px-6 sm:px-0 ">
+          {issignup == true ? "Login" : "Sign Up"}
         </h2>
-        <hr className="border border-red-600 w-[57px]" />
+        <hr className="border border-red-600 w-[57px] ml-6 sm:ml-0" />
         {/* /* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
         <form
-          className="login-form flex flex-col gap-4 "
+          className="login-form flex flex-col gap-4 w-full sm:p-0 p-6"
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* register your input into the hook by invoking the "register" function */}
           <input
-            className="inp-field email"
+            className="inp-field email "
             placeholder="example@gmail.com"
             {...register("email", { required: true })}
             value={email}
-            onChange={(e)=> setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           {errors.example && (
             <span className="text-red-500">Username is required</span>
@@ -135,16 +128,25 @@ export function Login() {
             <input
               className="inp-field pass w-full"
               placeholder="password"
-              type="password"
+              
+              type={eyetoggle == true ? 'text':'password'}
               {...register("password", { required: true })}
               value={pass}
-              onChange={(e)=> setPass(e.target.value)}
+              onChange={(e) => setPass(e.target.value)}
             />
-            <img
+            <div
+              className="cursor-pointer w-[20px] h-[15px] absolute top-[40%] right-4"
+              onClick={() => setEyetoggle(!eyetoggle)}
+           >
+           
+              {eyetoggle == true ? <Eye size={20} /> : <EyeOff size={20} />}
+
+              {/* <img
               className="w-[20px] h-[15px] absolute top-8 right-4"
               src="/eye.svg"
               alt=""
-            />
+            /> */}
+            </div>
           </div>
           {/* errors will return when field validation fails  */}
           {errors.exampleRequired && (
@@ -157,16 +159,14 @@ export function Login() {
               <span className="opacity-50">Remember me</span>
             </p>
 
-            {issignup && <span className="text-red-500">Forgot Password?</span> }
-            
+            {issignup && <span className="text-red-500">Forgot Password?</span>}
           </div>
 
           <Button
             className="rounded-none w-max h-[40px] tracking-[3px] self-end   font-semibold text-[11.2px]  "
             type="submit"
           >
-            {issignup == true ? 'LOGIN' : 'SIGN UP'}
-            
+            {issignup == true ? "LOGIN" : "SIGN UP"}
           </Button>
 
           <span className="self-center text-[20px] font-normal text-[#A5A5A5]">
@@ -186,8 +186,17 @@ export function Login() {
           </div>
           <div className="self-center mt-4">
             <p>
-              <span className="opacity-50">{issignup == true ? "Don't have an account ?" : "Already have an account ?"} </span>
-              <span className="text-red-600 cursor-pointer" onClick={()=> setIssignup(!issignup)}>{issignup == true ? "SIGN UP" : "LOGIN"}</span>
+              <span className="opacity-50">
+                {issignup == true
+                  ? "Don't have an account ?"
+                  : "Already have an account ?"}{" "}
+              </span>
+              <span
+                className="text-red-600 cursor-pointer"
+                onClick={() => setIssignup(!issignup)}
+              >
+                {issignup == true ? "SIGN UP" : "LOGIN"}
+              </span>
             </p>
           </div>
         </form>

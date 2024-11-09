@@ -16,12 +16,12 @@ const Cartslider = () => {
 
   return (
     <>
-      <div className="sm:w-[500px] w-full   h-dvh  shadow-2xl   bg-[#F5F5F5] rounded-sm relative  ">
+      <div className="sm:w-[500px] w-[100%]    h-full  shadow-2xl   bg-[#F5F5F5] rounded-sm relative ">
           <div className="bg-black   py-2 mx-2  px-4 rounded-md flex flex-row justify-between items-center">
             <h1 className="text-white text-center text-2xl">Your Items</h1>
             <ShoppingCart stroke="white" />
           </div>
-        <div className="flex flex-col h-[75%]  p-2 overflow-auto  ">
+        <div className="flex flex-col  h-[80%] md:h-[70%] lg:h-[75%] xl:h-[80%] p-2 xl:pb-6 overflow-y-scroll ">
           {cartData.length > 0 ? (
             cartData.map((items, index) => {
               return (
@@ -125,11 +125,11 @@ const Cartslider = () => {
             <h3 className="m-auto">No Items Found</h3>
           )}
         </div>
-
-        <div className=" absolute  left-0 right-0 bottom-20 flex flex-row justify-between items-center bg-black text-white p-2 m-2 rounded-md shadow-lg">
+        <div className=" absolute left-0 right-0 bottom-20   flex flex-row justify-between items-center bg-black text-white p-2 mx-2 my-2 rounded-md shadow-lg">
           <p>Total</p>
           <p>$ <span className="text-[#C75D68]">{totalAmount.toFixed(2)}</span></p>
         </div>
+
       </ div>
     </>
   );

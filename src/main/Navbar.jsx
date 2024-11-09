@@ -38,7 +38,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex flex-row justify-between items-center p-6 bg-[#F5F5F5] sticky top-0 w-full  border border-b-2 z-50">
+      <nav className="flex flex-row justify-between items-center p-6 bg-[#F5F5F5] fixed top-0 w-[100%]  border border-b-2 z-50">
         <div className="logo flex flex-row items-center gap-4">
           <div className="md:hidden block" onClick={()=> setShowmenu(!showmenu)}>
             <Menu />
@@ -86,9 +86,9 @@ const Navbar = () => {
       <div
         className={` ${
           isvisible
-            ? "fixed right-0 transition-all z-50 "
-            : " fixed right-[-600px] transition-all "
-        } z-50 `}
+            ? "fixed  top-[80px] h-dvh right-0 transition-all z-[999] "
+            : " fixed top-[80px]  right-[-600px] transition-all "
+        } z-50 sm:w-[500px] w-full `}
       >
         <Cartslider />
       </div>
